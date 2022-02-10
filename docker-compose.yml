@@ -1,0 +1,46 @@
+networks:
+  proxy:
+    external: true
+
+services:
+  lamarche_db:
+    image: mariadb
+    volumes:
+      - ./db:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lamarche_db
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    networks:
+      - proxy
+  
+  wordpress:
+    depends_on:
+      - lamarche_db
+    image: wordpress
+    volumes:
+      - ./wordpress:/var/www/html
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: lamarche_db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: lamarche_db
+    networks:
+      - proxy
+    labels:
+      # Service is configured with traefik proxy by the following labels:
+      # Enable treafik to monitor and proxy this service 
+      - "traefik.enable=true"
+      # Here we are defining wich entrypoint should be used by clients to access this service
+      - "traefik.http.routers.lamarchemeat.entrypoints=websecure"
+      - "traefik.http.routers.lamarchemeat.tls=true"
+      - "traefik.http.routers.lamarchemeat.tls.certresolver=certresolver"
+      # Here we define wich network treafik can find this service
+      - "traefik.docker.network=proxy"
+      # This is the port that traefik should proxy
+      - "traefik.http.services.lamarchemeat.loadbalancer.server.port=80"
+      # Domain name
+      - "traefik.http.routers.lamarchemeat.rule=Host(`lamarchemeat.com.localhost`)"
