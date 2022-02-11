@@ -20,6 +20,8 @@ services:
       MYSQL_DATABASE: /run/secrets/mysql_database
       MYSQL_USER: /run/secrets/mysql_user
       MYSQL_PASSWORD: /run/secrets/mysql_password
+    volumes:
+      - /var/lib/dbs/lamarche_db:/var/lib/mysql
 
   wordpress:
     secrets:
