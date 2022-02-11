@@ -14,7 +14,7 @@ Author URI: http://ma.tt/
 
 function hello_dolly_get_lyric() {
 	/** These are the lyrics to Hello Dolly */
-	$lyrics = "no";
+	$lyrics = "yes";
 
 	// Here we split it into lines.
 	$lyrics = explode( "\n", $lyrics );
