@@ -19,7 +19,7 @@ services:
   wordpress:
     depends_on:
       - lamarche_db
-    image: wordpress
+    build: .
     volumes:
       - ./wordpress:/var/www/html
     restart: always
@@ -28,6 +28,9 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_DB_NAME: lamarche_db
+      WORDPRESS_CONFIG_EXTRA: >
+        define('WP_HOME', 'https://lamarchemeat.com.localhost');
+        define('WP_SITEURL', 'https://lamarchemeat.com.localhost');
     networks:
       - proxy
     labels:
