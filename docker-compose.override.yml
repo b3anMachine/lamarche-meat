@@ -36,8 +36,8 @@ services:
       WORDPRESS_CONFIG_EXTRA: >
         define('WP_HOME', 'https://lamarchemeat.com');
         define('WP_SITEURL', 'https://lamarchemeat.com');
-      volumes:
-        - /var/www/lamarchemeat.com/wordpress:/var/www/html
+    volumes:
+      - /var/www/lamarchemeat.com/wordpress:/var/www/html
       
     labels:
       # Domain
